@@ -2,14 +2,14 @@ using System.Text;
 
 namespace RadYanFoFaDotNet;
 
-public class Utils
+public static class Utils
 {
     /**
      * 字符串base64编码
      */
     public static string Base64Encode(string str)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        var bytes = Encoding.UTF8.GetBytes(str);
         return Convert.ToBase64String(bytes);
     }
     
