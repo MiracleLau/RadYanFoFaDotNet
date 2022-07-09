@@ -2,11 +2,8 @@
 
 using RadYanFoFaDotNet;
 
-#if DEBUG
 var email = "";
 var key = "";
 var client = new FoFaClient(email, key);
 var result = client.SearchAsync("domain=\"sodsec.com\"");
 Console.WriteLine(result.Result!.Query);
-
-#endif
