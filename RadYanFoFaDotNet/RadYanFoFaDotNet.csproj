@@ -4,6 +4,13 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion>0.1.0</PackageVersion>
+        <Title>FOFA SDK</Title>
+        <Authors>Radiation</Authors>
+        <Description>FOFA Sdk for dotnet</Description>
+        <Copyright>Radiation</Copyright>
+        <PackageProjectUrl>https://codeberg.org/MiracleLau/RadYanFoFaDotNet</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>

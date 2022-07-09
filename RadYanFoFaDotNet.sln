@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadYanFoFaDotNet", "RadYanFoFaDotNet\RadYanFoFaDotNet.csproj", "{447A2D5F-BF6C-4476-A333-F6D85C077175}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadYanFoFaDotNetTest", "RadYanFoFaDotNetTest\RadYanFoFaDotNetTest.csproj", "{00D8DBCE-EA3C-47EC-A679-79B99F1196AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{447A2D5F-BF6C-4476-A333-F6D85C077175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{447A2D5F-BF6C-4476-A333-F6D85C077175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{447A2D5F-BF6C-4476-A333-F6D85C077175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D8DBCE-EA3C-47EC-A679-79B99F1196AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D8DBCE-EA3C-47EC-A679-79B99F1196AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D8DBCE-EA3C-47EC-A679-79B99F1196AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D8DBCE-EA3C-47EC-A679-79B99F1196AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

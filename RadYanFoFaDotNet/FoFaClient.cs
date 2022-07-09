@@ -81,6 +81,8 @@ public class FoFaClient
     {
         var qBase64 = Utils.Base64Encode(queryString);
         var request = new RestRequest("search/all")
+            .AddQueryParameter("email",_apiEmail)
+            .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
             .AddQueryParameter("fields", Strings.Join(_fields.ToArray(),","))
             .AddQueryParameter("page", page)
@@ -96,6 +98,8 @@ public class FoFaClient
     {
         var qBase64 = Utils.Base64Encode(queryString);
         var request = new RestRequest("search/all")
+            .AddQueryParameter("email",_apiEmail)
+            .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
             .AddQueryParameter("fields", Strings.Join(_fields.ToArray(),","))
             .AddQueryParameter("page", page)
