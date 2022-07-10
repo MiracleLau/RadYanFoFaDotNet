@@ -14,5 +14,4 @@ public static class Utils
     }
     
     // Todo: 计算icon的哈希
-    // Todo: 计算证书的序列号
 }

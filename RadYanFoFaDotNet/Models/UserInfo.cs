@@ -4,7 +4,7 @@ public class UserInfo
 {
     public bool Error { get; set; }
     public string? Email { get; set; }
-    public string? Username { get; set; } = null!;
+    public string? Username { get; set; }
     public int FCoin { get; set; }
     public bool IsVip { get; set; }
     public int VipLevel { get; set; }

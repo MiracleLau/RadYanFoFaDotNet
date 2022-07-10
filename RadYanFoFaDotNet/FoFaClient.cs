@@ -107,4 +107,6 @@ public class FoFaClient
             .AddQueryParameter("full", isFullData);
         return _httpClient.GetAsync<SearchResult>(request);
     }
+    
+    // Todo: 聚合统计
 }
