@@ -10,7 +10,9 @@
         <Authors>Radiation</Authors>
         <Description>FOFA Sdk for dotnet</Description>
         <Copyright>Radiation</Copyright>
-        <PackageProjectUrl>https://codeberg.org/MiracleLau/RadYanFoFaDotNet</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/MiracleLau/RadYanFoFaDotNet</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
