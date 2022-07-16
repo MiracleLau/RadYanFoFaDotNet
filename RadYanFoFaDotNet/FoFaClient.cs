@@ -34,27 +34,30 @@ public class FoFaClient
         };
     }
 
-    /**
-     * 修改默认的api域名
-     */
+    /// <summary>
+    /// 修改默认的API域名
+    /// </summary>
+    /// <param name="domain">带有https前缀的域名</param>
     public void SetApiDomain(string domain)
     {
         _apiDomain = domain + "/api/v1/";
         _httpClient = new RestClient(domain);
     }
     
-    /**
-     * 修改要返回的字段
-     */
+    /// <summary>
+    /// 修改查询结果中返回的字段
+    /// </summary>
+    /// <param name="fields">要返回的字段列表</param>
     public void SetGetFields(List<string> fields)
     {
         _fields = fields;
     }
     
     
-    /**
-     * 获取用户信息
-     */
+    /// <summary>
+    /// 获取用户信息
+    /// </summary>
+    /// <returns>用户的信息</returns>
     public UserInfo? GetUserInfo()
     {
         var request = new RestRequest("info/my")
@@ -63,9 +66,10 @@ public class FoFaClient
         return _httpClient.Get<UserInfo>(request);
     }
     
-    /**
-     * 异步获取用户信息
-     */
+    /// <summary>
+    /// 异步方式获取用户信息
+    /// </summary>
+    /// <returns>用户信息</returns>
     public async Task<UserInfo?> GetUserInfoAsync()
     {
         var request = new RestRequest("info/my")
@@ -74,9 +78,14 @@ public class FoFaClient
         return await _httpClient.GetAsync<UserInfo>(request, _source.Token);
     }
 
-    /**
-     * 执行查询语句
-     */
+    /// <summary>
+    /// 执行查询语句
+    /// </summary>
+    /// <param name="queryString">查询语句</param>
+    /// <param name="page">要获取第几页数据，默认为1</param>
+    /// <param name="size">每页返回多少条数据，默认为20</param>
+    /// <param name="isFullData">是否查询所有的数据，false为仅查询最近一年，默认为false</param>
+    /// <returns>搜索结果</returns>
     public SearchResult? Search(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);
@@ -91,9 +100,14 @@ public class FoFaClient
         return _httpClient.Get<SearchResult>(request);
     }
     
-    /**
-     * 异步执行查询语句
-     */
+    /// <summary>
+    /// 异步执行查询语句
+    /// </summary>
+    /// <param name="queryString">查询语句</param>
+    /// <param name="page">要获取第几页数据，默认为1</param>
+    /// <param name="size">每页返回多少条数据，默认为20</param>
+    /// <param name="isFullData">是否查询所有的数据，false为仅查询最近一年，默认为false</param>
+    /// <returns>搜索结果</returns>
     public Task<SearchResult?> SearchAsync(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);

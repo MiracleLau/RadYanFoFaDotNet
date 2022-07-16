@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.1.2</PackageVersion>
+        <PackageVersion>0.2.1</PackageVersion>
         <Title>FOFA SDK</Title>
         <Authors>Radiation</Authors>
         <Description>FOFA Sdk for dotnet</Description>
@@ -19,4 +19,8 @@
       <PackageReference Include="RestSharp" Version="108.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="System.Data.HashFunction.MurmurHash" />
+      <None Remove="murmurhash" />
+    </ItemGroup>
 </Project>

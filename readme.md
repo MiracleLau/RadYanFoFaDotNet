@@ -2,8 +2,6 @@
 
 用于.Net 6的FOFA SDK
 
-
-
 #### 安装方法
 
 ```powershell
@@ -94,10 +92,30 @@ public class SearchResult
 }
 ```
 
+#### 计算favicon文件的哈希
+
+计算favicon哈希的方式有两种，一种是通过favicon的http地址来获取，另一种是通过favicon的本地文件。
+
+##### 通过favicon的http地址获取
+
+需要传入favicon的http地址`url`，以及http请求超时时间`timeout`，http的地址需要是完整的地址，如：`https://github.com/favicon.ico`，time参数是的单位是毫秒，默认为2000，即2秒。
+
+```csharp
+Utils.GetIconHashFromHttp(url,timeout) 
+```
+
+##### 通过favicon文件获取
+
+也可以直接通过本地的favicon的文件来获取哈希值，只需要传入完整的favicon文件的路径即可，如：`d:/favicon.ico`。
+
+```csharp
+Utils.GetIconHashFromHttp(file) 
+```
+
 
 
 #### Todo
 
-- [ ]  根据favicon地址获取图标哈希
+- [x] 根据favicon地址获取图标哈希
 
-- [ ]  聚合统计
+- [ ] 聚合统计
