@@ -9,3 +9,20 @@ Console.WriteLine(Utils.GetIconHashFromFile(file));
 
 Console.WriteLine("通过url计算：");
 Console.WriteLine(Utils.GetIconHashFromHttp("https://github.com/favicon.ico"));
+
+var email = "";
+var key = "";
+var client = new FoFaClient(email, key);
+client.SetApiDomain("https://fofa.info");
+
+var result = client.GetUserInfo();
+Console.WriteLine(result);
+
+var search = client.Search("app=\"网宿科技-公司产品\"", 1);
+Console.WriteLine(search);
+
+var host = client.SearchHost("78.48.50.249", true);
+Console.WriteLine(host);
+
+var stats = client.SearchStats("domain=\"baidu.com\"");
+Console.WriteLine(stats);
