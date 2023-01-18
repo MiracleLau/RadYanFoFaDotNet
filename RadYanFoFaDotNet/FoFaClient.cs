@@ -11,6 +11,10 @@ public class FoFaClient
     private readonly CancellationTokenSource _source;
     
     private string _apiDomain;
+    private string _search_api_url;
+    private string _login_api_url;
+    private string _stats_api_url;
+    private string _host_api_url;
     private RestClient _httpClient;
     private List<string> _fields;
 
@@ -18,9 +22,13 @@ public class FoFaClient
     {
         _apiEmail = email;
         _apiKey = key;
-        _apiDomain = "https://fofa.info/api/v1/";
+        _apiDomain = "https://fofa.info";
         _httpClient = new RestClient(_apiDomain);
         _source = new CancellationTokenSource();
+        _search_api_url = "/api/v1/search/all";
+        _login_api_url = "/api/v1/info/my";
+        _stats_api_url = "/api/v1/search/stats";
+        _host_api_url = "/api/v1/host/";
         _fields = new List<string>
         {
             "ip",
@@ -40,7 +48,7 @@ public class FoFaClient
     /// <param name="domain">带有https前缀的域名</param>
     public void SetApiDomain(string domain)
     {
-        _apiDomain = domain + "/api/v1/";
+        _apiDomain = domain;
         _httpClient = new RestClient(domain);
     }
     
@@ -60,7 +68,7 @@ public class FoFaClient
     /// <returns>用户的信息</returns>
     public UserInfo? GetUserInfo()
     {
-        var request = new RestRequest("info/my")
+        var request = new RestRequest(_login_api_url)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey);
         return _httpClient.Get<UserInfo>(request);
@@ -72,7 +80,7 @@ public class FoFaClient
     /// <returns>用户信息</returns>
     public async Task<UserInfo?> GetUserInfoAsync()
     {
-        var request = new RestRequest("info/my")
+        var request = new RestRequest(_login_api_url)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey);
         return await _httpClient.GetAsync<UserInfo>(request, _source.Token);
@@ -89,7 +97,7 @@ public class FoFaClient
     public SearchResult? Search(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest("search/all")
+        var request = new RestRequest(_search_api_url)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
@@ -111,7 +119,7 @@ public class FoFaClient
     public Task<SearchResult?> SearchAsync(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest("search/all")
+        var request = new RestRequest(_search_api_url)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
@@ -121,6 +129,53 @@ public class FoFaClient
             .AddQueryParameter("full", isFullData);
         return _httpClient.GetAsync<SearchResult>(request);
     }
-    
+
     // Todo: 聚合统计
+    public StatsResult? SearchStats(string queryString, int page = 1, int size = 20, bool isFullData = false)
+    {
+        var qBase64 = Utils.Base64Encode(queryString);
+        var request = new RestRequest(_stats_api_url)
+            .AddQueryParameter("email", _apiEmail)
+            .AddQueryParameter("key", _apiKey)
+            .AddQueryParameter("qbase64", qBase64)
+            .AddQueryParameter("fields", Strings.Join(_fields.ToArray(), ","))
+            .AddQueryParameter("page", page)
+            .AddQueryParameter("size", size)
+            .AddQueryParameter("full", isFullData);
+        return _httpClient.Get<StatsResult>(request);
+    }
+
+    public Task<StatsResult?> SearchStatsAsync(string queryString, int page = 1, int size = 20, bool isFullData = false)
+    {
+        var qBase64 = Utils.Base64Encode(queryString);
+        var request = new RestRequest(_stats_api_url)
+            .AddQueryParameter("email", _apiEmail)
+            .AddQueryParameter("key", _apiKey)
+            .AddQueryParameter("qbase64", qBase64)
+            .AddQueryParameter("fields", Strings.Join(_fields.ToArray(), ","))
+            .AddQueryParameter("page", page)
+            .AddQueryParameter("size", size)
+            .AddQueryParameter("full", isFullData);
+        return _httpClient.GetAsync<StatsResult>(request);
+    }
+
+    public HostResult? SearchHost(string host, bool isDetail = false)
+    {
+        var api_host = _host_api_url + host;
+        var request = new RestRequest(api_host)
+            .AddQueryParameter("email", _apiEmail)
+            .AddQueryParameter("key", _apiKey)
+            .AddQueryParameter("detail", isDetail);
+        return _httpClient.Get<HostResult>(request);
+    }
+
+    public Task<HostResult?> SearchHostAsync(string host, bool isDetail = false)
+    {
+        var api_host = _host_api_url + host;
+        var request = new RestRequest(api_host)
+            .AddQueryParameter("email", _apiEmail)
+            .AddQueryParameter("key", _apiKey)
+            .AddQueryParameter("detail", isDetail);
+        return _httpClient.GetAsync<HostResult>(request);
+    }
 }
