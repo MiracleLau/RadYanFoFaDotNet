@@ -18,7 +18,7 @@ client.SetApiDomain("https://fofa.info");
 var result = client.GetUserInfo();
 Console.WriteLine(result);
 
-var search = client.Search("app=\"网宿科技-公司产品\"", 1);
+var search = client.Search("title=\"百度\"", 1);
 Console.WriteLine(search);
 
 var host = client.SearchHost("78.48.50.249", true);

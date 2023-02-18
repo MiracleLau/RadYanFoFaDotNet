@@ -11,10 +11,10 @@ public class FoFaClient
     private readonly CancellationTokenSource _source;
     
     private string _apiDomain;
-    private string _search_api_url;
-    private string _login_api_url;
-    private string _stats_api_url;
-    private string _host_api_url;
+    private readonly string _searchApiUrl;
+    private readonly string _loginApiUrl;
+    private readonly string _statsApiUrl;
+    private readonly string _hostApiUrl;
     private RestClient _httpClient;
     private List<string> _fields;
 
@@ -25,10 +25,10 @@ public class FoFaClient
         _apiDomain = "https://fofa.info";
         _httpClient = new RestClient(_apiDomain);
         _source = new CancellationTokenSource();
-        _search_api_url = "/api/v1/search/all";
-        _login_api_url = "/api/v1/info/my";
-        _stats_api_url = "/api/v1/search/stats";
-        _host_api_url = "/api/v1/host/";
+        _searchApiUrl = "/api/v1/search/all";
+        _loginApiUrl = "/api/v1/info/my";
+        _statsApiUrl = "/api/v1/search/stats";
+        _hostApiUrl = "/api/v1/host/";
         _fields = new List<string>
         {
             "ip",
@@ -68,7 +68,7 @@ public class FoFaClient
     /// <returns>用户的信息</returns>
     public UserInfo? GetUserInfo()
     {
-        var request = new RestRequest(_login_api_url)
+        var request = new RestRequest(_loginApiUrl)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey);
         return _httpClient.Get<UserInfo>(request);
@@ -80,7 +80,7 @@ public class FoFaClient
     /// <returns>用户信息</returns>
     public async Task<UserInfo?> GetUserInfoAsync()
     {
-        var request = new RestRequest(_login_api_url)
+        var request = new RestRequest(_loginApiUrl)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey);
         return await _httpClient.GetAsync<UserInfo>(request, _source.Token);
@@ -97,7 +97,7 @@ public class FoFaClient
     public SearchResult? Search(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest(_search_api_url)
+        var request = new RestRequest(_searchApiUrl)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
@@ -119,7 +119,7 @@ public class FoFaClient
     public Task<SearchResult?> SearchAsync(string queryString, int page = 1, int size = 20, bool isFullData = false)
     {
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest(_search_api_url)
+        var request = new RestRequest(_searchApiUrl)
             .AddQueryParameter("email",_apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64",qBase64)
@@ -130,49 +130,69 @@ public class FoFaClient
         return _httpClient.GetAsync<SearchResult>(request);
     }
 
-    // Todo: 聚合统计
-    public StatsResult? SearchStats(string queryString, int page = 1, int size = 20, bool isFullData = false)
+    /// <summary>
+    /// 聚合统计
+    /// </summary>
+    /// <param name="queryString">搜索语法</param>
+    /// <param name="fields">要获取的字段，默认为SetGetFields设置的值</param>
+    /// <returns>统计信息</returns>
+    public StatsResult? SearchStats(string queryString, List<string>? fields = null)
     {
+        fields ??= _fields;
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest(_stats_api_url)
+        var request = new RestRequest(_statsApiUrl)
             .AddQueryParameter("email", _apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64", qBase64)
-            .AddQueryParameter("fields", Strings.Join(_fields.ToArray(), ","))
-            .AddQueryParameter("page", page)
-            .AddQueryParameter("size", size)
-            .AddQueryParameter("full", isFullData);
+            .AddQueryParameter("fields", Strings.Join(fields.ToArray(), ","));
         return _httpClient.Get<StatsResult>(request);
     }
 
-    public Task<StatsResult?> SearchStatsAsync(string queryString, int page = 1, int size = 20, bool isFullData = false)
+    /// <summary>
+    /// 异步获取聚合统计
+    /// </summary>
+    /// <param name="queryString">搜索语法</param>
+    /// <param name="fields">要获取的字段，默认为SetGetFields设置的值</param>
+    /// <returns>统计信息</returns>
+    public Task<StatsResult?> SearchStatsAsync(string queryString, List<string>? fields = null)
     {
+        fields ??= _fields;
+        
         var qBase64 = Utils.Base64Encode(queryString);
-        var request = new RestRequest(_stats_api_url)
+        var request = new RestRequest(_statsApiUrl)
             .AddQueryParameter("email", _apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("qbase64", qBase64)
-            .AddQueryParameter("fields", Strings.Join(_fields.ToArray(), ","))
-            .AddQueryParameter("page", page)
-            .AddQueryParameter("size", size)
-            .AddQueryParameter("full", isFullData);
+            .AddQueryParameter("fields", Strings.Join(fields.ToArray(), ","));
         return _httpClient.GetAsync<StatsResult>(request);
     }
 
+    /// <summary>
+    /// Host聚合查询
+    /// </summary>
+    /// <param name="host">主机名，通常为ip地址</param>
+    /// <param name="isDetail">是否显示端口详情，默认为不显示</param>
+    /// <returns>主机聚合的查询结果</returns>
     public HostResult? SearchHost(string host, bool isDetail = false)
     {
-        var api_host = _host_api_url + host;
-        var request = new RestRequest(api_host)
+        var apiHost = _hostApiUrl + host;
+        var request = new RestRequest(apiHost)
             .AddQueryParameter("email", _apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("detail", isDetail);
         return _httpClient.Get<HostResult>(request);
     }
 
+    /// <summary>
+    /// 异步Host聚合查询
+    /// </summary>
+    /// <param name="host">主机名，通常为ip地址</param>
+    /// <param name="isDetail">是否显示端口详情，默认为不显示</param>
+    /// <returns>主机聚合的查询结果</returns>
     public Task<HostResult?> SearchHostAsync(string host, bool isDetail = false)
     {
-        var api_host = _host_api_url + host;
-        var request = new RestRequest(api_host)
+        var apiHost = _hostApiUrl + host;
+        var request = new RestRequest(apiHost)
             .AddQueryParameter("email", _apiEmail)
             .AddQueryParameter("key", _apiKey)
             .AddQueryParameter("detail", isDetail);
