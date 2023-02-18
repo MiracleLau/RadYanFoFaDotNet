@@ -46,9 +46,9 @@ public static class Utils
     /// 通过favicon的url地址来计算哈希值
     /// </summary>
     /// <param name="url">favicon的地址</param>
-    /// <param name="timeout">超时时间，单位毫秒，默认是2000毫秒，即2秒</param>
+    /// <param name="timeout">超时时间，单位毫秒，默认是3000毫秒，即3秒</param>
     /// <returns>哈希值</returns>
-    public static int GetIconHashFromHttp(string url, int timeout = 2000)
+    public static int GetIconHashFromHttp(string url, int timeout = 3000)
     {
         var options = new RestClientOptions(url)
         {
